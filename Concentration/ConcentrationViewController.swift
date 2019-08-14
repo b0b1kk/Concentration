@@ -9,6 +9,14 @@
 import UIKit
 
 class ConcentrationViewController: UIViewController {
+    
+    var theme: String? {
+        didSet {
+            emojiChoise = theme ?? ""
+            emoji = [:]
+            updateFocusIfNeeded()
+        }
+    }
 
    private lazy var game = Concentration(numbersOfCardPair: numberOfCardPairs)
     
@@ -24,7 +32,18 @@ class ConcentrationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        theme()
+        
+        let attributes: [NSAttributedString.Key: Any] = [.strokeWidth: 5.0, .strokeColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
+        let attributeStringFlipCount = NSAttributedString(string: "Flip count: \(game.flipCount)", attributes: attributes)
+        let attributeStringScore = NSAttributedString(string: "Score: \(game.scoreCount)", attributes: attributes)
+        let attributeStringButton = NSAttributedString(string: "New Game", attributes: attributes)
+        
+        flipCountLabel.attributedText = attributeStringFlipCount
+        scoreLabel.attributedText = attributeStringScore
+        newGameButton.setAttributedTitle(attributeStringButton, for: .normal)
+        
+        
+        
         uploadViewFromModel()
     }
     
@@ -42,7 +61,7 @@ class ConcentrationViewController: UIViewController {
     
     @IBAction private func newGameButton(_ sender: UIButton) {
         newGame()
-        theme()
+        
         uploadViewFromModel()
     }
     
@@ -53,65 +72,36 @@ class ConcentrationViewController: UIViewController {
             game.cards[index].flipCountForScore = 0
         }
         emoji = [:]
+        guard let newTheme = theme else {return}
+        emojiChoise = newTheme
         game.scoreCount = 0
         game.flipCount = 0
     }
     
     
    private func uploadViewFromModel() {
+    if cardButtonsArray != nil {
         scoreLabel.text = "Score: \(game.scoreCount)"
         flipCountLabel.text = "Flip count: \(game.flipCount)"
         for cardIndex in cardButtonsArray.indices {
             let card = game.cards[cardIndex]
             let button = cardButtonsArray[cardIndex]
             if card.isFaceUp {
-                button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
                 button.setTitle(emoji(for: card), for: .normal)
             } else {
                 button.setTitle("", for: .normal)
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : colorMain
             }
         }
-
-    }
-    
-   private func theme() {
-    
-    var attributes: [NSAttributedString.Key: Any] = [.strokeWidth: 5.0, .strokeColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)]
-    let attributeStringFlipCount = NSAttributedString(string: "Flip count: \(game.flipCount)", attributes: attributes)
-    let attributeStringScore = NSAttributedString(string: "Score: \(game.scoreCount)", attributes: attributes)
-    let attributeStringButton = NSAttributedString(string: "New Game", attributes: attributes)
-
-    flipCountLabel.attributedText = attributeStringFlipCount
-    scoreLabel.attributedText = attributeStringScore
-    newGameButton.setAttributedTitle(attributeStringButton, for: .normal)
-    
-        switch Theme.themeArray.count.arc4random {
-        case 0:
-            emojiChoise = Theme.themeArray[0].emojiForButton
-            colorMain = Theme.themeArray[0].mainColor
-            view.backgroundColor = Theme.themeArray[0].backGroundColor
-            attributes[.strokeColor] = colorMain
-            
-        case 1:
-            emojiChoise = Theme.themeArray[1].emojiForButton
-            colorMain = Theme.themeArray[1].mainColor
-            view.backgroundColor = Theme.themeArray[1].backGroundColor
-            attributes[.strokeColor] = colorMain
-
-        case 2:
-            emojiChoise = Theme.themeArray[2].emojiForButton
-            colorMain = Theme.themeArray[2].mainColor
-            view.backgroundColor = Theme.themeArray[2].backGroundColor
-            attributes[.strokeColor] = colorMain
-
-        default:
-            print("random index out of range")
         }
+
     }
+    
+
     
     private var emojiChoise = ""
-   private var colorMain = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+   private var colorMain = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
    private var emoji = [Card: String]()
     
    private func emoji(for card: Card) -> String {
