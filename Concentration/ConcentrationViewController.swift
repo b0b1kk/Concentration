@@ -43,7 +43,9 @@ class ConcentrationViewController: UIViewController {
         newGameButton.setAttributedTitle(attributeStringButton, for: .normal)
         
         
-        
+        uploadViewFromModel()
+    }
+    override func viewDidAppear(_ animated: Bool) {
         uploadViewFromModel()
     }
     
@@ -100,7 +102,7 @@ class ConcentrationViewController: UIViewController {
     
 
     
-    private var emojiChoise = ""
+    private var emojiChoise = "♣️♥️♦️♠️💄🦷💋👥🙏🏽👀"
    private var colorMain = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
    private var emoji = [Card: String]()
     
