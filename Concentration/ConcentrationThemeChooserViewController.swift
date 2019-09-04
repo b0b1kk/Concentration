@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ConcentrationThemeChooserViewController: UIViewController, UISplitViewControllerDelegate {
+class ConcentrationThemeChooserViewController: VCLLoggingViewController, UISplitViewControllerDelegate {
+    
+    override var vclLoggingName: String {
+        return "GameChooser"
+    }
     
     let themes = [ "Animals": "👻🎃🥶😱👹😈🤡👽💀👾",
                    "Faces": "😃🤪😎🤩🤓😏🤣😇🥺🥳",
@@ -38,13 +42,13 @@ class ConcentrationThemeChooserViewController: UIViewController, UISplitViewCont
                 let theme = themes[themeName] {
                 cvc.theme = theme
             }
-            } else if let cvc = lastSeguedToConcentrationViewController {
-                if let themeName = (sender as? UIButton)?.currentTitle, let theme = themes[themeName] {
-                    cvc.theme = theme
+        } else if let cvc = lastSeguedToConcentrationViewController {
+            if let themeName = (sender as? UIButton)?.currentTitle, let theme = themes[themeName] {
+                cvc.theme = theme
+                
+            }
+            navigationController?.pushViewController(cvc, animated: true)
             
-                }
-                navigationController?.pushViewController(cvc, animated: true)
-
         } else {
             performSegue(withIdentifier: "Choose Theme", sender: sender)
         }

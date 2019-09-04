@@ -17,17 +17,17 @@ struct Card: Hashable {
     static func == (lhs: Card, rhs: Card) -> Bool {
         return lhs.identifier == rhs.identifier
     }
-
-
+    
+    
     var isFaceUp = false
     var isMatched = false
     private var identifier: Int
     
     var flipCountForScore = 0
     
-   private static var uniqeIdentifier = 0
+    private static var uniqeIdentifier = 0
     
-   private static func getUniqueIdentifier() -> Int{
+    private static func getUniqueIdentifier() -> Int{
         uniqeIdentifier += 1
         return uniqeIdentifier
     }

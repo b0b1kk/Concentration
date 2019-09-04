@@ -12,10 +12,10 @@ class Concentration {
     
     var cards = [Card]()
     
-   private var oneAndOnlyFaceUpCard: Int? {
+    private var oneAndOnlyFaceUpCard: Int? {
         get {
             return cards.indices.filter() {cards[$0].isFaceUp}.oneAndOnly
-
+            
         }
         set {
             for index in cards.indices {
@@ -25,7 +25,7 @@ class Concentration {
     }
     var scoreCount = 0
     var flipCount = 0
-
+    
     func choiseCard(at index: Int) {
         if !cards[index].isMatched {
             if let matchIndex = oneAndOnlyFaceUpCard, matchIndex != index {
